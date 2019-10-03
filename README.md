@@ -1,68 +1,109 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Recruitment Exercise - Pipefy
 
-## Available Scripts
+The objective is to evaluate your knowledge and experience with React and related libraries for front-end development.
 
-In the project directory, you can run:
+You will build a React application that will render a Pipey form. This application must:
 
-### `yarn start`
+* Be a single page application, displaying all the form fields;
+* Store internally the values of those fields, as the user fills them up;
+* Submit the form to Pipefy's API;
+* Display any error messages sent by the API.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![screen shot 2017-12-18 at 16 34 05](https://user-images.githubusercontent.com/465990/34122868-f39dae42-e414-11e7-9df0-8e287759dc98.png)
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+**Obs**: This is only a reference. The most important part of the application is not the layout and visual structure, but the the JavaScript code.
 
-### `yarn test`
+## Rules
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* Your code must be hosted on a public GitHub repository;
+* You may use whatever libraries you want, besides React (check out the Recommendations sections below);
+  * In case you use a boilerplate library, such as `create-react-app`, you must create a separated git commit for the files created by this library;
+* You must write automated tests, using the library of your choice;
+* You must publish your application at [Heroku](https://dashboard.heroku.com/).
 
-### `yarn build`
+## API Access
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Pipefy uses a [GraphQL](http://graphql.org/learn/) API to get and change data. The API's endpoint you will use is at: https://app.pipefy.com/public_api. You must use the `POST` HTTP method.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+To **get the form data**, you will use the following **query**:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+{
+  publicForm(formId: "1lf_E0x4") {
+    publicFormSettings {
+      organizationName
+      submitButtonText
+      title
+    }
 
-### `yarn eject`
+    formFields {
+      ...on ShortTextField {
+        id
+        label
+      }
+      ...on LongTextField {
+        id
+        label
+      }
+      ...on SelectField {
+        id
+        label
+        options
+      }
+      ...on RadioVerticalField {
+        id
+        label
+        options
+      }
+      ...on ChecklistVerticalField {
+        id
+        label
+        options
+      }
+      ...on DateField {
+        id
+        label
+      }
+      __typename
+    }
+  }
+}
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To **submit the form**, you will use the following **mutation**:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+mutation {
+  submitPublicForm(input: {
+    formId: "1lf_E0x4",
+    filledFields: [
+      {
+        fieldId: "your_name",
+        fieldValue: "Teste"
+      }
+    ]
+  }) {
+    repoItem {
+      id
+      title
+    }
+  }
+}
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+**Obs**: This example handles only the value for the first form's field, but the structure is the same for all of them. You must change it accordingly. Besides, we recommend the use of [GraphQL variables](http://graphql.org/learn/queries/#variables) for the fields values.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Recommendations
 
-## Learn More
+We recommend [Redux](https://github.com/reactjs/redux) to help on managing the state of all your application.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Deadline
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This exercise must be completed within **one week** from the day it was sent to you.
 
-### Code Splitting
+## Good luck!
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+Feel free to ask **any questions** you might have during the development of your app.
 
-### Analyzing the Bundle Size
+Thank you!
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
