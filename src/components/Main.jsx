@@ -8,7 +8,10 @@ const Main = ({
   return (
     <div className="container">
       <Title publicFormSettings={publicFormSettings} />
-      <Form formFields={formFields} />
+      <Form
+        formFields={formFields}
+        submitButtonText={publicFormSettings.submitButtonText}
+      />
     </div>
   );
 };
