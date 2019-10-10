@@ -2,6 +2,8 @@ import * as React from 'react';
 import moment from 'moment-timezone';
 import { TextField, DatePicker, Trigger } from 'pipestyle';
 
+const isEmpty = value => !value || value === '';
+
 const DateField = ({ value, onChange }) => (
   <Trigger
     trigger="click"
@@ -13,14 +15,20 @@ const DateField = ({ value, onChange }) => (
         showClearButton
         locale="pt-BR"
         timezone="America/Sao_Paulo"
-        onChange={onChange}
+        onChange={date => {
+          if (date) {
+            onChange(date.toISOString());
+          } else {
+            onChange('');
+          }
+        }}
       />
     }
     placement="bottom"
     tetherProps={{ offset: '0px -45px' }}
   >
     <TextField
-      value={value ? moment(value).format('DD/MM/YYYY') : undefined}
+      value={!isEmpty(value) ? moment(value).format('DD/MM/YYYY') : ''}
       placeholder="99/99/9999"
     />
   </Trigger>

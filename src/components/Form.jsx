@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { shallowEqual, useSelector, useDispatch } from 'react-redux';
-import { BaseField, Button, TextField, Textarea } from 'pipestyle';
+import { useSelector, useDispatch } from 'react-redux';
+import { isEqual } from 'lodash';
+import { BaseField, Button } from 'pipestyle';
 
 import { updateField } from '../store/actions';
 
@@ -15,10 +16,11 @@ const getField = ({ __typename, value, onChange, ...otherProps }) =>
 
 const Field = ({ field }) => {
   const selectFieldValue = state => state.fields[field.id] || '';
-  const value = useSelector(selectFieldValue, shallowEqual);
+  const value = useSelector(selectFieldValue, isEqual);
   const dispatch = useDispatch();
-  const onChange = ({ target: { value } }) =>
+  const onChange = value => {
     dispatch(updateField(field.id, value));
+  };
   return (
     <BaseField label={field.label}>
       {getField({ ...field, value, onChange })}
