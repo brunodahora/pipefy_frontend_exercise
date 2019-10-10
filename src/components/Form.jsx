@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { isEqual } from 'lodash';
 import { BaseField, Button } from 'pipestyle';
 
 import { updateField } from '../store/actions';
@@ -16,7 +15,7 @@ const getField = ({ __typename, value, onChange, ...otherProps }) =>
 
 const Field = ({ field }) => {
   const selectFieldValue = state => state.fields[field.id] || '';
-  const value = useSelector(selectFieldValue, isEqual);
+  const value = useSelector(selectFieldValue);
   const dispatch = useDispatch();
   const onChange = value => {
     dispatch(updateField(field.id, value));
