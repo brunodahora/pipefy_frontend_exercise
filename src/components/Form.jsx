@@ -1,39 +1,46 @@
 import * as React from 'react';
+import { Button } from 'pipestyle';
 import { useSelector, useDispatch } from 'react-redux';
-import { BaseField, Button } from 'pipestyle';
 
-import { updateField } from '../store/actions';
+import { showSuccessPage } from '../store/actions';
 
-import * as Fields from './Fields';
+import Field from './Field';
 
-const getField = ({ __typename, value, onChange, ...otherProps }) =>
-  Fields[__typename] ? (
-    React.createElement(Fields[__typename], { value, onChange, ...otherProps })
-  ) : (
-    <div>{__typename}</div>
-  );
-
-const Field = ({ field }) => {
-  const selectFieldValue = state => state.fields[field.id] || '';
-  const value = useSelector(selectFieldValue);
-  const dispatch = useDispatch();
-  const onChange = value => {
-    dispatch(updateField(field.id, value));
-  };
-  return (
-    <BaseField label={field.label}>
-      {getField({ ...field, value, onChange })}
-    </BaseField>
-  );
+const getFilledFields = fields => {
+  return Object.keys(fields).map(fieldId => ({
+    fieldId,
+    fieldValue: fields[fieldId],
+  }));
 };
 
-const Form = ({ formFields, submitButtonText }) => {
+const Form = ({ formFields, submitButtonText, submitPublicForm }) => {
+  const dispatch = useDispatch();
+  const selectFields = state => state.fields;
+  const fields = useSelector(selectFields);
+  const filledFields = getFilledFields(fields);
+  const onClick = () =>
+    submitPublicForm({
+      variables: {
+        filledFields,
+      },
+    })
+      .then(result => {
+        if (result.data && result.data.submitPublicForm.repoItem) {
+          dispatch(showSuccessPage());
+        } else {
+          alert('Error');
+        }
+      })
+      .catch(error => {
+        alert(error.message);
+      });
+
   return (
     <div className="box fields">
       {formFields.map(field => (
         <Field key={field.id} field={field} />
       ))}
-      <Button onClick={() => console.log('click')}>{submitButtonText}</Button>
+      <Button onClick={onClick}>{submitButtonText}</Button>
     </div>
   );
 };

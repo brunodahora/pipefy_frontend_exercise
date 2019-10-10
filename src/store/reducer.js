@@ -1,20 +1,26 @@
-import { UPDATE_FIELD } from './actionTypes';
+import { UPDATE_FIELD, SHOW_SUCCESS_PAGE } from './actionTypes';
 
 const INITIAL_STATE = {
-  fields: { }
-}
+  fields: {},
+  showSuccessPage: false,
+};
 
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UPDATE_FIELD:
-      return { 
-        fields: { 
+      return {
+        fields: {
           ...state.fields,
           [action.id]: action.value,
-        }
-      };  
+        },
+      };
+    case SHOW_SUCCESS_PAGE:
+      return {
+        ...state,
+        showSuccessPage: true,
+      };
     default:
-      return state;  
+      return state;
   }
-}
+};
 export default reducer;
