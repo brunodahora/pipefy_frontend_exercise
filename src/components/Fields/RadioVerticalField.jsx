@@ -5,6 +5,7 @@ const RadioVerticalField = ({ value, onChange, options, ...otherProps }) =>
   options.map(option => (
     <Radio
       {...otherProps}
+      id={option}
       key={option}
       name={option}
       value={option}
