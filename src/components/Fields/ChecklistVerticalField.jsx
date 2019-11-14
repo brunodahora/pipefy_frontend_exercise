@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Checkbox } from 'pipestyle';
 
-const CheckboxVerticalField = ({ value, onChange, options, ...otherProps }) => {
-  console.log(value);
-  return options.map(option => (
+const CheckboxVerticalField = ({ value, onChange, options, ...otherProps }) =>
+  options.map(option => (
     <Checkbox
       {...otherProps}
       id={option}
@@ -20,5 +19,4 @@ const CheckboxVerticalField = ({ value, onChange, options, ...otherProps }) => {
       checked={value && value.includes(option)}
     />
   ));
-};
 export default CheckboxVerticalField;
