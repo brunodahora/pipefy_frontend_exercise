@@ -21,9 +21,11 @@ const Field = ({ field }) => {
     dispatch(updateField(field.id, value));
   };
   return (
-    <BaseField label={field.label}>
-      {getField({ ...field, value, onChange })}
-    </BaseField>
+    <div data-testid="field">
+      <BaseField label={field.label}>
+        {getField({ ...field, value, onChange })}
+      </BaseField>
+    </div>
   );
 };
 export default Field;

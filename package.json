@@ -19,8 +19,12 @@
     "redux-hooks": "^0.1.5"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.3",
+    "@testing-library/react": "^9.3.2",
     "eslint-plugin-prettier": "^3.1.1",
-    "prettier": "^1.18.2"
+    "faker": "^4.1.0",
+    "prettier": "^1.18.2",
+    "redux-mock-store": "^1.5.3"
   },
   "scripts": {
     "start": "react-scripts start",
